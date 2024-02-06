@@ -1,0 +1,43 @@
+#include <bits/stdc++.h>
+using namespace std;
+typedef long long ll;
+
+ll max_uv(ll n) {
+    ll ans = 1;
+    for (int i = sqrt(n); i >= 2; i--) {
+        if (n%i==0) {
+            ans = i; break;
+        } 
+    }
+    return ans;
+} 
+
+ll solve(ll n) {
+    queue <ll> Q;
+    int f[1000005];
+    memset(f, -1, sizeof(f));
+    f[n] = 0;
+    Q.push(n);
+    while(!Q.empty()) {
+        ll x = Q.front(); Q.pop();
+        if (f[1]!=-1) break;
+        ll k = max_uv(x);
+        if (f[x/k] == -1 && k != 1) {
+            f[x/k] = f[x] + 1;
+            Q.push(x/k);
+        }
+        if (f[x-1] == -1) {
+            f[x-1] = f[x] + 1;
+            Q.push(x-1);
+        } 
+    }
+    return f[1];
+}
+
+int main() {
+    int t; cin >> t;
+    while(t--) {
+        int n; cin >> n;
+        cout << solve(n) << endl;
+    }
+}
